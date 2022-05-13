@@ -24,10 +24,13 @@ python manage.py migrate
 python manage.py createsuperuser
 python manage.py runserver
 Create a directory named .ebextensions  >>
-    create file in the folder named django.config and add the followng contents to the file
+    create file in the folder named 01_django.config and add the followng contents to the file
         option_settings:
+            aws:elasticbeanstalk:application:environment:
+                DJANGO_SETTINGS_MODULE: "greatkart.settings"
+                PYTHONPATH: "/var/app/current:$PYTHONPATH"
             aws:elasticbeanstalk:container:python:
-                 WSGIPath: greatkart.wsgi:application
+                WSGIPath: "greatkart.wsgi:application"
 deactivate the env
 - run this command to create application in EB
     eb init -p python-3.7 greatkart-course
@@ -41,12 +44,16 @@ deactivate the env
 if red , go to the application and restart the env
 note down the CNAME 
 CNAME: greatkart-course-env.eba-2nrr4meu.us-west-2.elasticbeanstalk.com
-- add the CNAME to the allowed hosts 
+- add the CNAME to the allowed hosts or add "*"
 - redeploy to take the changes "eb deploy"
     and restart the app incase it was red 
 - now we need to configure the .env at eb console 
     AWS >Elastic Beanstalk>Environments>greatkart-course-env>Configuration>software>edit
     put all the keys and values stored at the .env
+
+NOW our web app should be running but without DB configuration 
+
+
 - Database > postgres
     1- AWS >Elastic Beanstalk>Environments>greatkart-course-env>Configuration>Database>edit
         create postgres instance by filling all the form 
@@ -77,18 +84,14 @@ CNAME: greatkart-course-env.eba-2nrr4meu.us-west-2.elasticbeanstalk.com
     3- pip install psycopg2-binary
        pip freeze > requirements.txt
 
-    4- create file named "db-migrate.config" under .ebextensions
-        paste the followings 
+    4- at the config file lets add the following commands
         container_commands:
-            01_migrate:
-                command: "django-admin.py migrate"
+            01_makemigrations:
+                command: "source /var/app/venv/*/bin/activate && python3 manage.py makemigrations --noinput"
                 leader_only: true
-            02_createsuperuser:
-                command: "echo \"from accounts.models import Account; Account.objects.create_superuser('admin', 'user', 'pythonarabia@gmail.com', 'admin', 'Django@123')\" | python manage.py shell"
+            02_migrate:
+                command: "source /var/app/venv/*/bin/activate && python3 manage.py migrate --noinput"
                 leader_only: true
-        option_settings:
-            aws:elasticbeanstalk:application:environment:
-                DJANGO_SETTINGS_MODULE: greatkart.settings
     5- git add .
        git commit -am " db config"
        eb deploy
