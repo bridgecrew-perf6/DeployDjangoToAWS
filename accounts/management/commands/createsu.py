@@ -11,8 +11,8 @@ class Command(BaseCommand):
             Account.objects.create_superuser(
                 firstname = "admin",
                 lastname = "user",
-                email = "admin@users.com"
+                email = "admin@users.com",
                 username='admin',
-                password='Django@123'
+                password='Django@123',
             )
         print('Superuser has been created.')
