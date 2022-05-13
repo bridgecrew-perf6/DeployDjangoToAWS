@@ -1,9 +1,11 @@
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
+from accounts.models import Account
 
 
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
-        if not User.objects.filter(username="admin").exists():
-            User.objects.create_superuser("admin3", "admin@admin.com", "Django@123")
+        if not Account.objects.filter(username="admin3").exists():
+            Account.objects.create_superuser(username="admin3", email="admin3@admin.com", 
+                                             password="Django@123", first_name="first", last_name="last")
