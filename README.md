@@ -97,7 +97,5 @@ NOW our web app should be running but without DB configuration
        eb deploy
        << step 4 will make migrations and migrate>>
     6- create super user to be discussed
-    03_createsuperuser:
-    command: "source /var/app/venv/*/bin/activate && echo \"from accounts.models import Account; Account.objects.create_superuser('first', 'last', 'email@gmail.com', 'admin2', 'Django@123')\" | python manage.py shell"
-    leader_only: true
+
 
