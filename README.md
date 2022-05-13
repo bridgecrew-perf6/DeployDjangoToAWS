@@ -95,4 +95,4 @@ NOW our web app should be running but without DB configuration
     5- git add .
        git commit -am " db config"
        eb deploy
-       << step 4 will migrate and create superuser>>
+       << step 4 will make migrations and migrate>>
