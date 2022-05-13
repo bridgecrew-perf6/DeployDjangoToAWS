@@ -27,7 +27,7 @@ Create a directory named .ebextensions  >>
     create file in the folder named django.config and add the followng contents to the file
         option_settings:
             aws:elasticbeanstalk:container:python:
-                 WSGIPath: greatkart/wsgi.py
+                 WSGIPath: greatkart.wsgi:application
 deactivate the env
 - run this command to create application in EB
     eb init -p python-3.7 greatkart-course
