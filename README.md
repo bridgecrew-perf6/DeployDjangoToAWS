@@ -43,3 +43,6 @@ note down the CNAME
 CNAME: greatkart-course-env.eba-2nrr4meu.us-west-2.elasticbeanstalk.com
 - add the CNAME to the allowed hosts 
 - redeploy to take the changes 
+    and restart the app incase it was red 
+- now we need to configure the .env at eb console 
+    AWS >Elastic Beanstalk>Environments>greatkart-course-env>Configuration>software>edit
