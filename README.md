@@ -47,4 +47,48 @@ CNAME: greatkart-course-env.eba-2nrr4meu.us-west-2.elasticbeanstalk.com
 - now we need to configure the .env at eb console 
     AWS >Elastic Beanstalk>Environments>greatkart-course-env>Configuration>software>edit
     put all the keys and values stored at the .env
-- 
+- Database > postgres
+    1- AWS >Elastic Beanstalk>Environments>greatkart-course-env>Configuration>Database>edit
+        create postgres instance by filling all the form 
+        greatkartuser
+        django123
+    2- go to local settings file and edit the DB section 
+
+        # Database Configuration
+        import os
+        if 'RDS_DB_NAME' in os.environ:
+            DATABASES = {
+                'default': {
+                    'ENGINE': 'django.db.backends.postgresql',
+                    'NAME': os.environ['RDS_DB_NAME'],
+                    'USER': os.environ['RDS_USERNAME'],
+                    'PASSWORD': os.environ['RDS_PASSWORD'],
+                    'HOST': os.environ['RDS_HOSTNAME'],
+                    'PORT': os.environ['RDS_PORT'],
+                }
+            }
+        else:
+            DATABASES = {
+                'default': {
+                    'ENGINE': 'django.db.backends.sqlite3',
+                    'NAME': BASE_DIR / 'db.sqlite3',
+                }
+            }
+    3- pip install psycopg2-binary
+       pip freeze > requirements.txt
+
+    4- create file named "db-migrate.config" under .ebextensions
+        paste the followings 
+        container_commands:
+            01_migrate:
+                command: "django-admin.py migrate"
+                leader_only: true
+            02_createsuperuser:
+                command: "echo \"from accounts.models import Account; Account.objects.create_superuser('admin', 'user', 'pythonarabia@gmail.com', 'admin', 'Django@123')\" | python manage.py shell"
+                leader_only: true
+        option_settings:
+            aws:elasticbeanstalk:application:environment:
+                DJANGO_SETTINGS_MODULE: greatkart.settings
+    5- git add .
+       git commit -am " db config"
+       eb deploy
