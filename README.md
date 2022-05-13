@@ -96,3 +96,5 @@ NOW our web app should be running but without DB configuration
        git commit -am " db config"
        eb deploy
        << step 4 will make migrations and migrate>>
+    6- create super user to be discussed
+
