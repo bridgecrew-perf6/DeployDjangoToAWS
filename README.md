@@ -92,3 +92,4 @@ CNAME: greatkart-course-env.eba-2nrr4meu.us-west-2.elasticbeanstalk.com
     5- git add .
        git commit -am " db config"
        eb deploy
+       << step 4 will migrate and create superuser>>
