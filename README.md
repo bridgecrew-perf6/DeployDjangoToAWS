@@ -42,7 +42,9 @@ if red , go to the application and restart the env
 note down the CNAME 
 CNAME: greatkart-course-env.eba-2nrr4meu.us-west-2.elasticbeanstalk.com
 - add the CNAME to the allowed hosts 
-- redeploy to take the changes 
+- redeploy to take the changes "eb deploy"
     and restart the app incase it was red 
 - now we need to configure the .env at eb console 
     AWS >Elastic Beanstalk>Environments>greatkart-course-env>Configuration>software>edit
+    put all the keys and values stored at the .env
+- 
